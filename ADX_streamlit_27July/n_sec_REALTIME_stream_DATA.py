@@ -17,7 +17,7 @@ def get_data(limit):
 
     conn = mysql.connector.connect(host=host, user=username, passwd=DB_PASSWORD, db=db)
     cursor = conn.cursor()
-    query = f"""(SELECT * FROM 1min_ohlc ORDER BY datetime DESC LIMIT {limit})
+    query = f"""(SELECT * FROM 5sec_ohlc ORDER BY datetime DESC LIMIT {limit})
             ORDER BY datetime ASC;"""
     # query = f"""(SELECT * FROM caldata ORDER BY timestamp DESC LIMIT {limit})
     #         ORDER BY timestamp ASC;"""
@@ -32,17 +32,21 @@ def get_live_data():
     '''Here we will write the code to get live data in 5 seconds interval it can be through web socket or from database'''
     while True:
         row = get_data(1)
+        print(row)
         high = row[0][1]
         low = row[0][2]
         close = row[0][3]
-        print("get_live_data returned high,low,close",high,low,close)
-        yield high,low,close
+        datetime = row[0][-1]
+        print("get_live_data returned high,low,close",high,low,close,datetime)
+        yield high,low,close,datetime
 
 def get_first_14_data():
     rows =  get_data(14)
     highs = [row[1] for row in rows]
     lows = [row[2] for row in rows]
     closes = [row[3] for row in rows]
+    # datetime is remaining
+    # datetime = rows[0][-1]
     print("get_first_14_data returned,highs,lows,closes",highs,lows,closes)
     return highs,lows,closes
 

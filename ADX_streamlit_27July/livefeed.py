@@ -63,19 +63,15 @@ class KiteLiveFeed(KiteInitializer):
         last_trade_time = ticks[0]['exchange_timestamp']
         instrument_token = ticks[0]['instrument_token']
         last_price = ticks[0]['last_price']
-        open = ticks[0]['ohlc']['open']
-        high = ticks[0]['ohlc']['high']
-        low = ticks[0]['ohlc']['low']
-        close = ticks[0]['ohlc']['close']
 
         ohlc_data = [
-            (instrument_token, open, high, low, close, last_price, str(last_trade_time))
+            (instrument_token, last_price, str(last_trade_time))
         ]
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         print(current_time, last_trade_time)
         query = """
-            INSERT INTO ohlc (instrument_token, open, high, low, close, last_price, last_traded_time)
-            VALUES (%s,%s, %s, %s, %s, %s, %s);
+            INSERT INTO ohlc (instrument_token, last_price, last_traded_time)
+            VALUES (%s,%s,%s);
             """
         if self.conn.is_connected():
             # sleep for some time

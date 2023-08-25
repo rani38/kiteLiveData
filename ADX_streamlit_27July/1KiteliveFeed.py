@@ -9,7 +9,6 @@ DATABASE = {
     "DATABASE": 'test'
 }
 
-
 # wait till it gets 0 seconds for any minute
 now = datetime.now()
 next_min = now + timedelta(minutes=1)
@@ -18,5 +17,3 @@ diff =  next_min - now
 sec = int(diff.total_seconds())
 time.sleep(sec+2)
 instance.run(**DATABASE)
-
-
